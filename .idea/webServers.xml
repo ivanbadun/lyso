@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="265a3d5b-f605-4cbf-9dd5-0fdb35751797" name="pressable.dev" url="">
+        <fileTransfer rootFolder="/srv/htdocs" accessType="SFTP" host="ssh.pressable.com" port="22" sshConfigId="2942e330-3680-4feb-9aee-dab271616305" sshConfig="&lt;username&gt;@ssh.pressable.com:22 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

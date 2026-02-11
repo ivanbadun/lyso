@@ -1,0 +1,11 @@
+{
+  "devUrl": "http://ready-for-feedback3.com/internship/badun/lyso/",
+  "themeName": "lyso",
+  "proxyUrl": "https://localhost:3388",
+  "open": false,
+  "bsWatchFiles": [
+    "inc/**/*.php",
+    "parts/**/*.php",
+    "templates/**/*.php"
+  ]
+}
