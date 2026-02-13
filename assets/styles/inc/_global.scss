@@ -69,7 +69,12 @@ main {
 
   .posts-list & {
     margin-bottom: 40px;
+    margin-top: 40px;
   }
+}
+
+.posts-list {
+  margin-top: 40px;
 }
 
 .search__input {
