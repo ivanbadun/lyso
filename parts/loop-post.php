@@ -1,28 +1,42 @@
-<!-- BEGIN of Post -->
-<article id="post-<?php the_ID(); ?>" <?php post_class('preview preview--' . get_post_type()); ?>>
-    <div class="grid-x grid-margin-x">
-        <?php if (has_post_thumbnail()) { ?>
-            <div class="medium-4 small-12 cell text-center medium-text-left">
-                <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
-                    <?php the_post_thumbnail('medium', ['class' => 'preview__thumb']); ?>
-                </a>
-            </div>
-        <?php } ?>
-        <div class="cell auto">
-            <h3 class="preview__title">
-                <a href="<?php the_permalink(); ?>"
-                   title="<?php echo esc_attr(sprintf(__('Permalink to %s', 'fwp'), the_title_attribute('echo=0'))); ?>"
-                   rel="bookmark"><?php echo get_the_title() ?: __('No title', 'fwp'); ?>
-                </a>
-            </h3>
-            <?php if (is_sticky()) { ?>
-                <span class="secondary label preview__sticky"><?php _e('Sticky', 'fwp'); ?></span>
-            <?php } ?>
-            <div class="preview__excerpt">
-                <?php the_excerpt(); // Use wp_trim_words() instead if you need specific number of words?>
-            </div>
-            <p class="preview__meta"><?php echo sprintf(__('Written by %s on %s', 'fwp'), get_the_author_posts_link(), get_the_time(get_option('date_format'))); ?></p>
-        </div>
+<article id="post-<?php the_ID(); ?>" <?php post_class('news-item'); ?>>
+    <div class="news-item__image">
+        <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+            <?php if (has_post_thumbnail()) : ?>
+                <?php the_post_thumbnail('large'); ?>
+            <?php else : ?>
+                <?php
+                $placeholder = get_stylesheet_directory_uri() . '/assets/images/placeholder.jpg';
+                ?>
+                <img src="<?php echo esc_url($placeholder); ?>" alt="<?php the_title_attribute(); ?>">
+            <?php endif; ?>
+        </a>
     </div>
+
+    <h3 class="news-item__title">
+        <a href="<?php the_permalink(); ?>">
+            <?php
+            $title = get_the_title();
+            echo esc_html(wp_trim_words($title, 6, '...'));
+            ?>
+        </a>
+    </h3>
+
+    <div class="news-item__meta">
+        <span class="date">
+            <i class="fa fa-calendar"></i> <?php echo get_the_date('F j, Y'); ?>
+        </span>
+        <span class="comments">
+            <i class="fa fa-comment"></i> <?php comments_number(__('No Comments', 'fwp'), __('1 Comment', 'fwp'), __('% Comments', 'fwp')); ?>
+        </span>
+    </div>
+
+    <div class="news-item__excerpt">
+        <?php
+        echo wp_trim_words(get_the_excerpt(), 15, '...');
+        ?>
+    </div>
+
+    <a href="<?php the_permalink(); ?>" class="about-btn">
+        <?php _e('Learn more', 'fwp'); ?>
+    </a>
 </article>
-<!-- END of Post -->

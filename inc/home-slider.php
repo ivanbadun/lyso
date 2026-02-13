@@ -233,43 +233,47 @@ add_shortcode('slider', function () {
                 $slider->the_post(); ?>
                 <div class="slick-slide home-slide">
                     <div class="home-slide__inner" <?php bg(get_attached_img_url(get_the_ID(), 'full_hd')); ?>>
+
                         <?php $bg_video_url = get_post_meta(get_the_ID(), 'slide_video_bg', true); ?>
-                        <?php if ('video' == get_post_format() && $bg_video_url) { ?>
+                        <?php if ('video' == get_post_format() && $bg_video_url) : ?>
                             <div class="videoHolder show-for-large"
                                  data-ratio="<?php echo get_post_meta(get_the_ID(), 'video_aspect_ratio', true) ?: '16:9'; ?>">
                                 <?php
-                                $allowed_video_format = [
-                                    'webm' => 'video/webm',
-                                    'mp4' => 'video/mp4',
-                                    'ogv' => 'video/ogg',
-                                    'mkv' => 'video/mkv',
-                                ]; ?>
-                                <?php $file_info = wp_check_filetype($bg_video_url, $allowed_video_format); ?>
-                                <?php if ($file_info['ext']) { ?>
-                                    <video src="<?php echo $bg_video_url; ?>"
-                                           autoplay
-                                           preload="none"
-                                           muted="muted"
-                                           loop="loop"
-                                           class="video video--local"></video>
-                                <?php } elseif (is_embed_video($bg_video_url)) { ?>
+                                $allowed_video_format = ['webm' => 'video/webm', 'mp4' => 'video/mp4', 'ogv' => 'video/ogg', 'mkv' => 'video/mkv'];
+                                $file_info = wp_check_filetype($bg_video_url, $allowed_video_format);
+                                ?>
+                                <?php if ($file_info['ext']) : ?>
+                                    <video src="<?php echo $bg_video_url; ?>" autoplay preload="none" muted="muted" loop="loop" class="video video--local"></video>
+                                <?php elseif (is_embed_video($bg_video_url)) : ?>
                                     <div class="video video--embed responsive-embed widescreen">
                                         <?php echo wp_oembed_get($bg_video_url, ['location' => 'home_slider', 'id' => 'slide-' . get_the_ID()]); ?>
                                     </div>
-                                <?php } ?>
+                                <?php endif; ?>
                             </div>
-                        <?php } ?>
+                        <?php endif; ?>
+
+                        <?php $link = get_field('link_slider')?>
 
                         <div class="grid-container home-slide__caption">
                             <div class="grid-x grid-margin-x">
-                                <div class="cell">
-                                    <h3><?php the_title(); ?></h3>
-                                    <?php the_content(); ?>
+                                <div class="cell medium-7 large-6">
+                                    <div class="slide-blue-box">
+                                        <div style='transform: scaleX(-1)'>
+                                            <h3><?php the_title(); ?></h3>
+                                            <div class="slide-content">
+                                                <?php the_content(); ?>
+                                            </div>
+                                            <?php if ($link) : ?>
+                                                <a href="<?php echo esc_url($link['url']); ?>" class="about-btn">
+                                                    <?php echo esc_html($link['title']); ?>
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             <?php } ?>
         </div><!-- END of  #home-slider-->

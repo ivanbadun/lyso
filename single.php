@@ -31,12 +31,6 @@ get_header(); ?>
                 <?php } ?>
             </div>
             <!-- END of post content -->
-
-            <!-- BEGIN of sidebar -->
-            <div class="large-4 medium-4 small-12 cell sidebar">
-                <?php get_sidebar('right'); ?>
-            </div>
-            <!-- END of sidebar -->
         </div>
     </div>
 </main>

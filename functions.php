@@ -8,6 +8,10 @@ use theme\WlAcfGfField;
  * Functions.
  */
 
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+});
+
 // Declaring the assets manifest
 $manifest_json = get_theme_file_path() . '/dist/assets.json';
 $assets = [

@@ -1,3 +1,7 @@
+* {
+  color: #00263c;
+}
+
 h1, .h1 {
   /*basic heading styles*/
   font-size: 2rem;
@@ -29,13 +33,19 @@ h6, .h6 {
 }
 
 .button {
-	padding: 10px 15px;
-	background-color: #2271b1;
-	text-transform: uppercase;
-	font-family: sans-serif;
-	font-weight: 700;
-	text-decoration: none;
-	color: #ffffff;
+  display: inline-block;
+  margin-top: 25px;
+  padding: 10px 25px;
+  border: 1px solid #ffffff;
+  text-decoration: none;
+  transition: 0.3s;
+  color: #ffffff;
+  background-color: #00a2ff;
+}
+
+.button:hover {
+  color: #00a2ff;
+  background-color: #ffffff;
 }
 
 .two-columns {

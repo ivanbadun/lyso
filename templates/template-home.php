@@ -7,16 +7,17 @@ get_header(); ?>
 <?php if (shortcode_exists('slider')) {
     echo do_shortcode('[slider]');
 } ?>
-
+<div class='features-section'>
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell">
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-                    <?php the_content(); ?>
-                <?php endwhile; endif; ?>
+                <?php if( have_rows('advatages_repeater') ):
+                    get_template_part( 'parts/advantages' );
+                endif; ?>
             </div>
         </div>
     </div>
+</div>
 
 <?php if ( have_rows( 'content' ) ): ?>
     <?php while ( have_rows( 'content' ) ): the_row(); ?>
@@ -25,53 +26,54 @@ get_header(); ?>
 <?php endif; ?>
 
 <?php
-// Получаем страницу
-$paged = (get_query_var('paged')) ? get_query_var('paged') : ((get_query_var('page')) ? get_query_var('page') : 1);
+$queried_posts = get_field('show_quotes');
 
-$quotes_args = array(
-    'post_type'      => 'quotes',
-    'posts_per_page' => 1,
-    'paged'          => $paged
-);
-
-$quotes_query = new WP_Query($quotes_args);
-
-if ($quotes_query->have_posts()) : ?>
+if ( $queried_posts ): ?>
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell">
-                <?php while ($quotes_query->have_posts()) : $quotes_query->the_post(); ?>
-                    <?php get_template_part( 'parts/lyrics' ); ?>
-                <?php endwhile; ?>
-
-                <div class="quotes-pagination-wrapper">
-                    <ul class="pagination" role="navigation" aria-label="Pagination">
-                        <?php
-                        $big = 999999999; // уникальное число для замены
-                        $pages = paginate_links( array(
-                            'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-                            'format'    => '?paged=%#%',
-                            'current'   => max( 1, $paged ),
-                            'total'     => $quotes_query->max_num_pages,
-                            'prev_next' => false,
-                            'type'      => 'array',
-                            'show_all'  => true,
-                        ) );
-
-                        if ( is_array( $pages ) ) {
-                            foreach ( $pages as $page ) {
-                                // Добавляем класс 'current' для активной точки, как того требует Foundation
-                                $active_class = ( strpos( $page, 'current' ) !== false ) ? 'class="current"' : '';
-                                echo "<li $active_class>$page</li>";
-                            }
-                        }
-                        ?>
-                    </ul>
+                <div class="quotes-slick-slider">
+                    <?php foreach ( $queried_posts as $post ):
+                        setup_postdata($post);
+                        get_template_part( 'parts/lyrics' );
+                    endforeach;
+                    wp_reset_postdata(); ?>
                 </div>
             </div>
         </div>
+        <hr>
     </div>
-    <?php wp_reset_postdata(); ?>
 <?php endif; ?>
+
+<div class="grid-container latest-posts-section">
+    <div class="grid-x grid-margin-x">
+        <div class="cell">
+            <h2 class="text-center news__title">Latest News from Lysoclear</h2>
+        </div>
+
+        <?php
+        $posts = get_field('count_posts_home','option');
+        $args = array(
+            'post_type'      => 'post',
+            'posts_per_page' => $posts,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+        );
+        $latest_posts_query = new WP_Query( $args );
+
+        if ( $latest_posts_query->have_posts() ) : ?>
+            <div class="cell">
+                <div class="news-slick-slider">
+                    <?php while ( $latest_posts_query->have_posts() ) : $latest_posts_query->the_post(); ?>
+                        <div class="news-slide-item">
+                            <?php get_template_part('parts/loop', 'post'); ?>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+            </div>
+            <?php wp_reset_postdata(); ?>
+        <?php endif; ?>
+    </div>
+</div>
 
 <?php get_footer(); ?>

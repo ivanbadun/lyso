@@ -30,11 +30,6 @@ import objectFitImages from 'object-fit-images';
 // import '../blocks/gutenberg/**/index.js';
 
 /**
- * Init foundation
- */
-$(document).foundation();
-
-/**
  * Fit slide video background to video holder
  */
 function resizeVideo() {
@@ -64,6 +59,33 @@ function resizeVideo() {
  * Scripts which runs after DOM load
  */
 $(document).on('ready', function () {
+  // Инициализация Foundation
+  $(document).foundation();
+
+  $('.title-bar').on('click', function () {
+    const targetId = $(this).data('responsive-toggle');
+    if (targetId) {
+      // Принудительно вызываем переключение через Foundation
+      $('#' + targetId).foundation('toggleMenu');
+    }
+  });
+
+  $(window)
+    .on('toggled.zf.responsiveToggle', function () {
+      $('.menu-icon').toggleClass('is-active');
+    })
+    .on('changed.zf.mediaquery', function () {
+      $('.menu-icon').removeClass('is-active');
+    });
+
+  $(window).on('orientationchange', function () {
+    setTimeout(function () {
+      if ($('.menu-icon').hasClass('is-active') && window.innerWidth < 1024) {
+        $('[data-responsive-toggle="main-menu"]').foundation('toggleMenu');
+      }
+    }, 200);
+  });
+
   /**
    * Make elements equal height
    */
@@ -77,7 +99,7 @@ $(document).on('ready', function () {
   }
 
   /**
-   * Add fancybox to images
+   * Add fancybox to images (Закомментировано по вашему оригиналу)
    */
   // $('.gallery-item')
   //   .find('a[href$="jpg"], a[href$="png"], a[href$="gif"]')
@@ -95,7 +117,7 @@ $(document).on('ready', function () {
   // });
 
   /**
-   * Init parallax
+   * Init parallax (Закомментировано по вашему оригиналу)
    */
   // jarallaxElement();
   // jarallax(document.querySelectorAll('.jarallax'), {
@@ -103,7 +125,7 @@ $(document).on('ready', function () {
   // });
 
   /**
-   * Detect element appearance in viewport
+   * Detect element appearance in viewport (Закомментировано по вашему оригиналу)
    */
   // ScrollOut({
   //   offset: function() {
@@ -191,7 +213,8 @@ $(document).on('ready', function () {
    */
   $(window).on('orientationchange', function () {
     setTimeout(function () {
-      if ($('.menu-icon').hasClass('is-active') && window.innerWidth < 641) {
+      // Изменено на 1024 (large), так как бургер теперь и на планшетах
+      if ($('.menu-icon').hasClass('is-active') && window.innerWidth < 1024) {
         $('[data-responsive-toggle="main-menu"]').foundation('toggleMenu');
       }
     }, 200);
@@ -204,8 +227,6 @@ $(document).on('ready', function () {
  * Scripts which runs after all elements load
  */
 $(window).on('load', function () {
-  // jQuery code goes here
-
   let $preloader = $('.preloader');
   if ($preloader.length) {
     $preloader.addClass('preloader--hidden');
@@ -216,8 +237,6 @@ $(window).on('load', function () {
  * Scripts which runs at window resize
  */
 $(window).on('resize', function () {
-  // jQuery code goes here
-
   resizeVideo();
 });
 
@@ -226,4 +245,43 @@ $(window).on('resize', function () {
  */
 $(window).on('scroll', function () {
   // jQuery code goes here
+});
+
+jQuery(document).ready(function ($) {
+  $('.quotes-slick-slider').slick({
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    dots: true,
+    adaptiveHeight: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
+  });
+
+  $('.news-slick-slider').slick({
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: false,
+    dots: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  });
 });
