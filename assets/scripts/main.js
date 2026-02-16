@@ -191,13 +191,20 @@ $(document).on('ready', function () {
    * Add `is-active` class to menu-icon button on Responsive menu toggle
    * And remove it on breakpoint change
    */
-  $(window)
-    .on('toggled.zf.responsiveToggle', function () {
-      $('.menu-icon').toggleClass('is-active');
-    })
-    .on('changed.zf.mediaquery', function () {
-      $('.menu-icon').removeClass('is-active');
-    });
+  $(window).on('toggled.zf.responsiveToggle', function (event, target) {
+    if (target && target.length) {
+      let targetId = target.attr('id');
+      let $button = $('[data-responsive-toggle="' + targetId + '"]').find(
+        '.menu-icon'
+      );
+
+      if (target.is(':visible')) {
+        $button.addClass('is-active');
+      } else {
+        $button.removeClass('is-active');
+      }
+    }
+  });
 
   /**
    * Close responsive menu on orientation change

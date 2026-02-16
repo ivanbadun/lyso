@@ -41,7 +41,7 @@ use theme\FoundationNavigation;
             <div class="shrink cell">
                 <?php if (has_nav_menu('header-menu')) : ?>
                     <div class="title-bar hide-for-large" data-responsive-toggle="main-menu" data-hide-for="large">
-                        <button class="menu-icon" type="button" data-toggle aria-label="Menu" aria-controls="main-menu">
+                        <button id="hamburger-btn" class="menu-icon" type="button" data-toggle aria-label="Menu" aria-controls="main-menu">
                             <span></span>
                         </button>
                         <div class="title-bar-title" data-toggle></div>
