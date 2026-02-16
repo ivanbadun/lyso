@@ -8,7 +8,7 @@ $hero_bg_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
 $page_title = get_the_title();
 ?>
 
-<section class="news-hero" style="background-image: url('<?php echo esc_url($hero_bg_url); ?>');">
+<section class="news-hero" <?php bg($hero_bg_url); ?>>
     <div class="grid-container">
         <div class="slide-blue-box title">
             <h1><?php echo esc_html($page_title); ?></h1>

@@ -135,7 +135,12 @@
 
   &:hover {
     background-color: $dark_blue;
+    text-decoration: none !important;
   }
+}
+
+.tel__footer {
+  white-space: nowrap;
 }
 
 @media (max-width: 1024px) {

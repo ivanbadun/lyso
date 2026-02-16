@@ -7,17 +7,18 @@ get_header(); ?>
 <?php if (shortcode_exists('slider')) {
     echo do_shortcode('[slider]');
 } ?>
+
+<?php if( have_rows('advatages_repeater') ): ?>
 <div class='features-section'>
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell">
-                <?php if( have_rows('advatages_repeater') ):
-                    get_template_part( 'parts/advantages' );
-                endif; ?>
+                <?php get_template_part( 'parts/advantages' ); ?>
             </div>
         </div>
     </div>
 </div>
+<?php endif; ?>
 
 <?php if ( have_rows( 'content' ) ): ?>
     <?php while ( have_rows( 'content' ) ): the_row(); ?>
@@ -45,35 +46,37 @@ if ( $queried_posts ): ?>
     </div>
 <?php endif; ?>
 
-<div class="grid-container latest-posts-section">
-    <div class="grid-x grid-margin-x">
-        <div class="cell">
-            <h2 class="text-center news__title">Latest News from Lysoclear</h2>
-        </div>
+<?php
+$posts = get_field('count_post_home');
+$text = get_field('title_news_home');
+$args = array(
+    'post_type'      => 'post',
+    'posts_per_page' => $posts,
+    'orderby'        => 'date',
+    'order'          => 'DESC',
+);
+$latest_posts_query = new WP_Query( $args );
 
-        <?php
-        $posts = get_field('count_posts_home','option');
-        $args = array(
-            'post_type'      => 'post',
-            'posts_per_page' => $posts,
-            'orderby'        => 'date',
-            'order'          => 'DESC',
-        );
-        $latest_posts_query = new WP_Query( $args );
-
-        if ( $latest_posts_query->have_posts() ) : ?>
-            <div class="cell">
-                <div class="news-slick-slider">
-                    <?php while ( $latest_posts_query->have_posts() ) : $latest_posts_query->the_post(); ?>
-                        <div class="news-slide-item">
-                            <?php get_template_part('parts/loop', 'post'); ?>
-                        </div>
-                    <?php endwhile; ?>
+if ( $latest_posts_query->have_posts() ) : ?>
+    <div class="grid-container latest-posts-section">
+        <div class="grid-x grid-margin-x">
+            <?php if($text) : ?>
+                <div class="cell">
+                    <h2 class="text-center news__title"><?php echo $text ?></h2>
                 </div>
-            </div>
-            <?php wp_reset_postdata(); ?>
-        <?php endif; ?>
+            <?php endif; ?>
+                <div class="cell">
+                    <div class="news-slick-slider">
+                        <?php while ( $latest_posts_query->have_posts() ) : $latest_posts_query->the_post(); ?>
+                            <div class="news-slide-item">
+                                <?php get_template_part('parts/loop', 'post'); ?>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                </div>
+                <?php wp_reset_postdata(); ?>
+        </div>
     </div>
-</div>
+<?php endif; ?>
 
 <?php get_footer(); ?>

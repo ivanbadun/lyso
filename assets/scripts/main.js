@@ -59,16 +59,7 @@ function resizeVideo() {
  * Scripts which runs after DOM load
  */
 $(document).on('ready', function () {
-  // Инициализация Foundation
   $(document).foundation();
-
-  $('.title-bar').on('click', function () {
-    const targetId = $(this).data('responsive-toggle');
-    if (targetId) {
-      // Принудительно вызываем переключение через Foundation
-      $('#' + targetId).foundation('toggleMenu');
-    }
-  });
 
   $(window)
     .on('toggled.zf.responsiveToggle', function () {
@@ -81,7 +72,7 @@ $(document).on('ready', function () {
   $(window).on('orientationchange', function () {
     setTimeout(function () {
       if ($('.menu-icon').hasClass('is-active') && window.innerWidth < 1024) {
-        $('[data-responsive-toggle="main-menu"]').foundation('toggleMenu');
+        $('[data-responsive-toggle="main-menu"]').foundation('toggle');
       }
     }, 200);
   });
@@ -213,9 +204,8 @@ $(document).on('ready', function () {
    */
   $(window).on('orientationchange', function () {
     setTimeout(function () {
-      // Изменено на 1024 (large), так как бургер теперь и на планшетах
       if ($('.menu-icon').hasClass('is-active') && window.innerWidth < 1024) {
-        $('[data-responsive-toggle="main-menu"]').foundation('toggleMenu');
+        $('[data-responsive-toggle="main-menu"]').foundation('toggle');
       }
     }, 200);
   });
@@ -248,6 +238,15 @@ $(window).on('scroll', function () {
 });
 
 jQuery(document).ready(function ($) {
+  const LazyLoadClass = window.LazyLoad;
+  let myLazyLoad;
+
+  if (typeof LazyLoadClass !== 'undefined') {
+    myLazyLoad = new LazyLoadClass({
+      elements_selector: '.lazy',
+    });
+  }
+
   $('.quotes-slick-slider').slick({
     infinite: true,
     slidesToShow: 1,
@@ -259,7 +258,9 @@ jQuery(document).ready(function ($) {
     autoplaySpeed: 5000,
   });
 
-  $('.news-slick-slider').slick({
+  const $newsSlider = $('.news-slick-slider');
+
+  $newsSlider.slick({
     infinite: true,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -283,5 +284,11 @@ jQuery(document).ready(function ($) {
         },
       },
     ],
+  });
+
+  $newsSlider.on('setPosition afterChange', function () {
+    if (myLazyLoad && typeof myLazyLoad.update === 'function') {
+      myLazyLoad.update();
+    }
   });
 });

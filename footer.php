@@ -19,7 +19,7 @@
                 <h1 class="message__title">
                     <?php _e('Questions? Send us a message', 'fwp'); ?>
                     <?php if ($phone) : ?>
-                        <?php _e('or call', 'fwp'); ?><a href="tel:<?php echo $phone; ?>"><?php echo $phone; ?></a>
+                        <?php _e('or call', 'fwp'); ?> <a class='tel__footer' href="tel:<?php echo $phone; ?>"><?php echo $phone; ?></a>
                     <?php endif; ?>
                 </h1>
             </div>
